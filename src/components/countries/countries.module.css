@@ -1,0 +1,37 @@
+.border{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 10px;
+}
+.countrie{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+    height: 70px;
+    
+}
+.flag{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    
+}
+.p{
+    margin-left: 10px;
+}
+.flexrow{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+   
+}
