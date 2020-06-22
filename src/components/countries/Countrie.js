@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import css from './countries.module.css'
 import { formatNumber } from './helpers/formatHelpers'
 
-export default class  extends Component {
-    render() {
-        const {countrie} = this.props
+export default function (props) {
+        const {countrie} = props
         console.log(countrie)
         return (  
             <div className={css.countrie}>
@@ -13,5 +12,4 @@ export default class  extends Component {
                 <p className={css.p}><strong>({formatNumber(countrie.population)})</strong></p>
             </div>
         )
-    }
 }

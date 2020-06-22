@@ -1,20 +1,16 @@
-import React, { Component } from 'react';
+import React, {useState,useEffect } from 'react';
 import Countries from './components/countries/Countries';
 import Header from './components/countries/header/Header';
 
 
-export default class App extends Component {
-  constructor(){
-    super()
-    this.state = {
-        allCountries: [],
-        filterCountries: [],
-        filterPopulation:0,
-        filter: ''
-
-    }
-  }
-  async componentDidMount(){
+export default function App(){
+  const [allCountries, setAllCountries ] = useState([])
+  const [filterCountries, setFilterCountries] = useState([])
+  const [filterPopulation, setFilterPopulation] = useState(0)
+  const [filter, setFilter] = useState('')
+  
+  useEffect(() => {
+   const fetchStates = async () =>{
     const res = await fetch('https://restcountries.eu/rest/v2/all')
     const json = await res.json()
 
@@ -27,16 +23,14 @@ export default class App extends Component {
         population,
       }
     })
-    const filterPopulation = this.calculateTotalPopulation(allContries)
-    this.setState({
-      allCountries: allContries,
-      filterCountries: Object.assign([],allContries),
-      filterPopulation
-    })
-    
-    console.log("aaa,-")
+    setAllCountries(allContries)
+    const filterPopulation = calculateTotalPopulation(allContries)
+    setFilterCountries(Object.assign([],allContries))
+    setFilterPopulation(filterPopulation)
   }
-  calculateTotalPopulation = (countries) =>{
+  fetchStates()
+  }, [])
+  const calculateTotalPopulation = (countries) =>{
     const filterPopulation = countries.reduce((acc,cur)=>{
       return acc + cur.population
     },0)
@@ -44,28 +38,19 @@ export default class App extends Component {
     return filterPopulation
   }
   
-  handleChangeFilter = (newFilter) =>{
-    this.setState({
-      filter: newFilter
-    })
+  const handleChangeFilter = (newFilter) =>{
+    setFilter(newFilter)
     const filterLowerCase = newFilter.toLowerCase()
-    const filterCountries = this.state.allCountries.filter((countrie) =>{
+    const filterCountries = allCountries.filter((countrie) =>{
      return countrie.filtername.includes(filterLowerCase)
     })
-    const filterPopulation = this.calculateTotalPopulation(filterCountries)
-    this.setState({
-      filterPopulation,
-      filterCountries,
-    })
-    
+    const filterPopulation = calculateTotalPopulation(filterCountries)
+    setFilterPopulation(filterPopulation)
+    setFilterCountries(filterCountries)
   }
- 
-  render() {
-    const {filter,filterCountries,filterPopulation,} = this.state
     return (<div className="container" >
       <h1 className="center">React Countries</h1>
-      <Header filter={filter} population={filterPopulation}countrieCount={filterCountries} onChangeFilter={this.handleChangeFilter}/>
+      <Header filter={filter} population={filterPopulation}countrieCount={filterCountries} onChangeFilter={handleChangeFilter}/>
       <Countries countries={filterCountries}/>
       </div>)
-  }
 }
